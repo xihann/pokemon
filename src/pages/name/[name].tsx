@@ -35,9 +35,9 @@ const PokemonByNamePage: NextPage<Props> = ({ pokemon }) => {
             ticks: 70,
             gravity: 0,
             angle: -100,
-            decay: 0.94,
+            decay: 0.93,
             zIndex: 999,
-            startVelocity: 30,
+            startVelocity: 100,
             shapes: ['star'],
             colors: ['FFE400', 'FFBD00', 'E89400', 'FFCA6C', 'FDFFB8'],
             origin: { x: 0, y: 0 }
@@ -153,7 +153,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     return {
         props: {
-            pokemon: await getPokemonInfo( name )
+            pokemon: await getPokemonInfo(name)
         },
     };
 };
