@@ -133,7 +133,7 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
 };
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
-    const paths = [...Array(151)].map((_, index) => ({
+    const paths = [...Array(641)].map((_, index) => ({
         params: { id: `${index + 1}` },
     }));
 
