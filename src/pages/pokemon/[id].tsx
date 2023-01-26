@@ -27,40 +27,40 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
         localFavorites.toggleFavorite(pokemon.id);
         setIsInFavorites( !isInFavorites );
 
-        if( !isInFavorites ) return;
+        if( isInFavorites ) return;
 
         var defaults = {
             spread: 360,
             ticks: 70,
             gravity: 0,
             angle: -100,
-            decay: 0.94,
+            decay: 0.93,
             zIndex: 999,
-            startVelocity: 30,
+            startVelocity: 100,
             shapes: ['star'],
             colors: ['FFE400', 'FFBD00', 'E89400', 'FFCA6C', 'FDFFB8'],
             origin: { x: 0, y: 0 }
-          };
-          
-          function shoot() {
+        };
+
+        function shoot() {
             confetti({
-              ...defaults,
-              particleCount: 200,
-              scalar: 1.2,
-              shapes: ['star']
+                ...defaults,
+                particleCount: 200,
+                scalar: 1.2,
+                shapes: ['star']
             });
-          
+
             confetti({
-              ...defaults,
-              particleCount: 10,
-              scalar: 0.75,
-              shapes: ['circle']
+                ...defaults,
+                particleCount: 10,
+                scalar: 0.75,
+                shapes: ['circle']
             });
-          }
-          
-          setTimeout(shoot, 0);
-          setTimeout(shoot, 100);
-          setTimeout(shoot, 200);
+        }
+
+        setTimeout(shoot, 0);
+        setTimeout(shoot, 100);
+        setTimeout(shoot, 200);
         
     }
 
@@ -139,18 +139,28 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
 
     return {
         paths,
-        fallback: false,
+        fallback: 'blocking',
     };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-    const { id } = params as { id: string };
 
+    const { id } = params as { id: string };
+    const pokemon = await getPokemonInfo( id );
+    if( !pokemon ){
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        }
+    }
     
     return {
         props: {
-            pokemon: await getPokemonInfo( id )
+            pokemon
         },
+        revalidate: 86400
     };
 };
 
